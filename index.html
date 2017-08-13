@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Art Portfolio</title>
+        <meta name="description" content="Art Portfolio">
+        <meta name="keywords" content="Art stuff, Painting">
+        <meta name="author" content="Mathew Cortez">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link type="text/css" rel="stylesheet" href="css/style.css"/>
+        <link type="text/css" rel="stylesheet" href="css/bootstrap.css"/>
+        <link type="text/css" rel="stylesheet" href="css/normalize.css"/>
+        <script src="paper-full.min.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
+        <script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script>
+
+        <script type="text/javascript" src="bootstrap.min.js"></script>
+        
+        <script>
+            
+            $(window).scroll(
+                {
+                    previousTop: 0
+                }, 
+                function () {
+                var currentTop = $(window).scrollTop();
+                if ($(window).width() < 750) {return;}
+                 else if (currentTop < this.previousTop) {
+                    $("#navigation").css("opacity", "0.75");
+                } else {
+                    $("#navigation").css("opacity", "0");
+                }
+                this.previousTop = currentTop;
+            }
+                );
+            
+            $(document).ready(function () {
+                $('img').on('click', function () {
+                    var image = $(this).attr('src');
+                    //alert(image);
+                    $('#myModal').on('show.bs.modal', function () {
+                        $(".showimage").attr("src", image);
+                    });
+                });
+            });
+            
+            
+            function myFunction() {
+                var x = document.getElementById("navigation");
+                if (x.style.display ===  "block" || x.style.display === "") {
+                    x.style.display = "none";
+                    x.style.transition = "all 0.7s";
+                } else {
+                    x.style.display = "block";
+                    x.style.transition = "all 0.7s";
+                }
+            }
+
+        </script>
+    </head>
+    <body>
+        <script>
+            AOS.init();
+        </script>
+        <section class="front">
+            
+
+            <section class="men" onclick="myFunction()">
+                <img src="img/menu.svg" class="menu" >
+            </section>
+            <nav id="navigation">
+                <section class="navSection"> 
+                    <a href="#top"><span class="navName">Home</span></a>
+                </section>
+                <section class="navSection">
+                    
+                    <a href="#projectsSection" class="pr"><span class="navName">
+                    Art</span></a>
+                </section>
+                <section class="navSection">
+                    
+                    <a href="#aboutMeSection" class=meLink><span class="navName">Contact Info</span></a>
+                </section>
+            </nav>
+
+            <script type="text/paperscript" canvas="canvas-1" resize="true">
+            // Based on 'JPEG Raster' by Jonathan Puckey:
+            // http://www.flickr.com/photos/puckey/3179779686/in/photostream/
+
+            // Create a raster item:
+            var raster = new Raster('img/mona.jpg');
+            var loaded = false;
+
+            raster.on('load', function() {
+                loaded = true;
+                onResize();
+            });
+
+            // Make the raster invisible:
+            raster.visible = false;
+
+            var lastPos = view.center;
+            function moveHandler(event) {
+                if (!loaded)
+                    return;
+                if (lastPos.getDistance(event.point) < 4)
+                    return;
+                lastPos = event.point;
+
+                var size = this.bounds.size.clone();
+                var isLandscape = size.width > size.height;
+
+                // If the path is in landscape orientation, we're going to
+                // split the path horizontally, otherwise vertically:
+
+                size /= isLandscape ? [2, 1] : [1, 2];
+
+                var path = new Path.Rectangle({
+                    point: this.bounds.topLeft.floor(),
+                    size: size.ceil(),
+                    onMouseMove: moveHandler
+                });
+                path.fillColor = raster.getAverageColor(path);
+
+                var path = new Path.Rectangle({
+                    point: isLandscape
+                        ? this.bounds.topCenter.ceil()
+                        : this.bounds.leftCenter.ceil(),
+                    size: size.floor(),
+                    onMouseMove: moveHandler
+                });
+                path.fillColor = raster.getAverageColor(path);
+
+                this.remove();
+            }
+
+            function onResize(event) {
+                if (!loaded)
+                    return;
+                project.activeLayer.removeChildren();
+
+                // Transform the raster so that it fills the bounding rectangle
+                // of the view:
+                raster.fitBounds(view.bounds, true);
+
+                // Create a path that fills the view, and fill it with
+                // the average color of the raster:
+                new Path.Rectangle({
+                    rectangle: view.bounds,
+                    fillColor: raster.getAverageColor(view.bounds),
+                    onMouseMove: moveHandler
+                });
+            }
+</script>
+            
+            <div class="canvas">
+                <canvas resize="true" id="canvas-1"></canvas>
+            </div>
+            <section class="name">
+                
+                <h2>Your Name</h2>
+
+                <h2>Art Title</h2>
+            </section>
+            <section class="scrollNotice">
+                <section class="arrowPic">
+
+                    <svg  width="60px" height="80px" viewBox="0 0 50 80" xml:space="preserve">
+                    <polyline fill="none" stroke="#363636" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="0.375,0.375 45.63,38.087 0.375,75.8 "/>
+                    </svg>
+                </section>
+            </section>
+        </section>
+        <section class="projects">
+            <a name="projectsSection"></a>
+            <h3>Art</h3>
+            <hr style="margin-left:auto;margin-right:auto;width:60%;">
+            <section class= "art">
+                <section class="row">
+                    <img id="1" data-toggle="modal" data-target="#myModal" src="img/750x450.png" class="piece" data-aos="fade-up">
+                    <img id="2" data-toggle="modal" data-target="#myModal" src="img/750x450.png" class="piece" data-aos="fade-up">
+                    <img id="3" data-toggle="modal" data-target="#myModal" src="img/750x450.png" class="piece" data-aos="fade-up">
+                </section>
+            </section>
+            <section class= "art">
+                <section class="row">
+                    <img id="4" data-toggle="modal" data-target="#myModal" src="img/750x450.png" class="piece" data-aos="fade-up">
+                    <img id="5" data-toggle="modal" data-target="#myModal" src="img/750x450.png" class="piece" data-aos="fade-up">
+                    <img id="6" data-toggle="modal" data-target="#myModal" src="img/750x450.png" class="piece" data-aos="fade-up">
+                </section>
+            </section>
+            
+            <section id="myModal" class="modal fade" role="dialog">
+                <section class="modal-dialog">
+                    <section class="modal-content">
+                        <section class="modal-body">
+                            <img class="showimage img-responsive" src="" />
+                        </section>
+                        <section class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </section>
+                    </section>
+                </section>
+            </section>
+        </section>
+        
+        <section class="about">
+            
+            <a name="aboutMeSection"></a>
+            <h3>Contact Me</h3>
+            <hr style="margin-left:auto;margin-right:auto;width:60%;">
+            <img src="img/placeholder.png" class="profile" alt="Profile picture" data-aos="fade-up">
+            
+            <hr style="clear:both;margin-left:auto;margin-right:auto;width:30%;">
+            
+            <p class="detail" data-aos="fade-down"><b>Name:</b> Your Name<br> <b>E-mail:</b> youremail@gmail.com<br> <b>Instagram: </b> that stuff<br> <b>Social Media: </b> the other ones<br>
+            
+        </section>
+        <footer>&copy; 2017 - Mathew Cortez</footer>
+        <script>
+            (function() {
+                var canvas = document.getElementById('canvas-1'),
+                        context = canvas.getContext('2d');
+
+                // resize the canvas to fill browser window dynamically
+                window.addEventListener('resize', resizeCanvas, false);
+
+                function resizeCanvas() {
+                        canvas.width = window.innerWidth;
+                        canvas.height = window.innerHeight;
+
+                        drawStuff(); 
+                }
+                resizeCanvas();
+
+                function drawStuff() {
+                        
+                }
+            })();
+        </script>
+    </body>
+    
+    
+</html>
